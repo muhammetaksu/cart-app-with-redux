@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { DLT, ADD, REMOVE } from "../redux/actions/action";
 import "./style.css";
+import { warning } from "./AntdMessages";
 
 const CardDetails = () => {
     const [data, setData] = useState([]);
@@ -38,8 +39,9 @@ const CardDetails = () => {
         dispatch(REMOVE(item));
     };
 
-    const dlt = (id) => {
-        dispatch(DLT(id));
+    const dlt = (ens) => {
+        dispatch(DLT(ens.id));
+        warning(ens.name);
         navigate("/");
     };
 
@@ -132,7 +134,7 @@ const CardDetails = () => {
                                                                 cursor: "pointer",
                                                             }}
                                                             onClick={() =>
-                                                                dlt(ens.id)
+                                                                dlt(ens)
                                                             }
                                                         ></i>
                                                     </span>

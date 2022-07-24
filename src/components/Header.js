@@ -8,7 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Navbar from "react-bootstrap/Navbar";
 import { useSelector, useDispatch } from "react-redux";
 import { Table } from "react-bootstrap";
-import { DLT } from "../redux/actions/action";
+import { ADD, DLT } from "../redux/actions/action";
 import { message, Space } from "antd";
 import { success, warning } from "./AntdMessages";
 import "antd/dist/antd.css";
@@ -49,6 +49,10 @@ const Header = () => {
         setAnchorEl(null);
     };
 
+    const goToTop = () => {
+        window.scrollTo(0, 0);
+    };
+
     return (
         <div>
             <Navbar
@@ -64,15 +68,17 @@ const Header = () => {
             >
                 <Container>
                     <NavLink
+                        onClick={() => goToTop()}
                         to="/"
-                        className="text-decoration-none text-light mx-2"
+                        className="text-decoration-none text-light"
                     >
                         365 Redux-Cart
                     </NavLink>
-                    <Nav className="me-auto">
+                    <Nav className="ms-auto me-4">
                         <NavLink
+                            onClick={() => goToTop()}
                             to="/"
-                            className="text-decoration-none text-light mx-2"
+                            className="text-decoration-none text-light"
                         >
                             Home
                         </NavLink>
@@ -125,6 +131,9 @@ const Header = () => {
                                                         onClick={handleClose}
                                                     >
                                                         <img
+                                                            onClick={() =>
+                                                                goToTop()
+                                                            }
                                                             src={e.imgdata}
                                                             style={{
                                                                 width: "7rem",

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import CardDatas from "./CardData";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ADD } from "../redux/actions/action";
 import "./style.css";
 import { message, Space } from "antd";
@@ -27,6 +27,7 @@ const Cards = () => {
             <div className="row d-flex justify-content-center align-items-center ">
                 {data.map((ens, key) => (
                     <Card
+                        key={ens.id}
                         style={{ width: "22rem", border: "none" }}
                         className="mx-2 mt-4"
                     >
