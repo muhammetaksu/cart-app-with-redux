@@ -1,8 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { DLT, ADD, REMOVE } from '../redux/actions/action';
 import './style.css';
 
 const CardDetails = () => {
+  const [data, setData] = useState([]);
+  console.log('Data: ', data);
+
+  const { id } = useParams();
+  // console.log(id);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const getdata = useSelector((state) => state.cartreducer.carts);
+  // console.log(getdata);
+
+  const compare = () => {
+    const comparedata = getdata.filter((e) => {
+      return e.id == id;
+    });
+    setData(comparedata);
+  };
+
+  //ürün ekleme
+  const addHandler = (e) => {
+    // console.log(e);
+    dispatch(ADD(e));
+  };
+
+  //ürün azaltma
+
+  const remove = (item) => {
+    dispatch(REMOVE(item));
+  };
+
+  const dlt = (id) => {
+    dispatch(DLT(id));
+    navigate('/');
+  };
+
+  useEffect(() => {
+    compare();
+  }, [id]);
+
   return (
     <>
       <div className="container mt-3">
@@ -10,48 +54,77 @@ const CardDetails = () => {
 
         <section className="container mt-3">
           <div className="item_details ">
-            <div className="items_img ">
-              <img
-                alt=""
-                src="https://www.do-re.com.tr/gibson-les-paul-standard-60s-solak-elektro-gitar-bourbon-burst-ebda9d1023160f7a5492424043ee7d8e-3dfee03ed1860c31ec79f0e3839d5728-large-pp.jpg"
-              />
-            </div>
+            {data.map((ens) => (
+              <>
+                <div className="items_img ">
+                  <img alt="" src={ens.imgdata} />
+                </div>
 
-            <div className="details ">
-              <Table>
-                <tr>
-                  <td>
-                    <p>
-                      <strong>Name: </strong> Gibson Les Paul Standard
-                    </p>
-                    <p>
-                      <strong>Fiyat: </strong> 70000 TL
-                    </p>
-                    <p>
-                      <strong>Açıklama: </strong> Solak Elektro
-                    </p>
-                    <p>
-                      <strong>Toplam: </strong> Gibson Les Paul Standard
-                    </p>
-                  </td>
-                  <td>
-                    <p>
-                      <strong>Sil: </strong>
-                      <span>
-                        <i
-                          className="fas fa-trash "
+                <div className="details ">
+                  <Table>
+                    <tr>
+                      <td>
+                        <p>
+                          <strong>Name: </strong> {ens.name}
+                        </p>
+                        <p>
+                          <strong>Fiyat: </strong> {ens.price} ₺
+                        </p>
+                        <p>
+                          <strong>Açıklama: </strong> {ens.name}
+                        </p>
+                        <p>
+                          <strong>Toplam: </strong> {ens.price * ens.quantity}
+                        </p>
+                        <div
+                          className="mt-5 d-flex justify-content-between align-items-center"
                           style={{
-                            color: 'red',
-                            fontSize: 20,
+                            width: 100,
                             cursor: 'pointer',
+                            background: 'darkgray',
+                            color: 'black',
                           }}
-                        ></i>
-                      </span>
-                    </p>
-                  </td>
-                </tr>
-              </Table>
-            </div>
+                        >
+                          <span
+                            style={{ fontSize: 24 }}
+                            onClick={
+                              ens.quantity <= 1
+                                ? () => dlt(ens.id)
+                                : () => remove(ens)
+                            }
+                          >
+                            -
+                          </span>
+                          <span style={{ fontSize: 22 }}>{ens.quantity}</span>
+                          <span
+                            style={{ fontSize: 24 }}
+                            onClick={() => addHandler(ens)}
+                          >
+                            +
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <p>
+                          <strong>Sil: </strong>
+                          <span>
+                            <i
+                              className="fas fa-trash "
+                              style={{
+                                color: 'red',
+                                fontSize: 20,
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => dlt(ens.id)}
+                            ></i>
+                          </span>
+                        </p>
+                      </td>
+                    </tr>
+                  </Table>
+                </div>
+              </>
+            ))}
           </div>
         </section>
       </div>

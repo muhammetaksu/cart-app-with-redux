@@ -2,10 +2,19 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardDatas from './CardData';
+import { useDispatch } from 'react-redux';
+import { ADD } from '../redux/actions/action';
 import './style.css';
 
 const Cards = () => {
   const [data, setData] = useState(CardDatas);
+
+  const dispatch = useDispatch();
+
+  const addHandler = (e) => {
+    // console.log(e);
+    dispatch(ADD(e));
+  };
 
   return (
     <div className="container mt-3">
@@ -22,7 +31,11 @@ const Cards = () => {
               <Card.Title>{ens.name}</Card.Title>
               <Card.Text>Fiyat : {ens.price} ₺</Card.Text>
               <Card.Text>{ens.detail}</Card.Text>
-              <Button variant="info" className="col-lg-12">
+              <Button
+                variant="info"
+                className="col-lg-12"
+                onClick={() => addHandler(ens)}
+              >
                 Sepete Ekle
               </Button>
             </Card.Body>

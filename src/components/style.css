@@ -1,3 +1,7 @@
+p {
+  font-size: small;
+}
+
 .item_details {
   margin: auto;
   display: flex;
